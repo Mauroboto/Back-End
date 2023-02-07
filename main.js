@@ -1,4 +1,4 @@
-class ProductManager {
+/* class ProductManager {
   constructor() {
     this.products = [];
     this.id = 0;
@@ -53,3 +53,76 @@ productManager1.addProducts(
   20
 );
 console.log(productManager1.getProducts());
+ */
+
+//PRIMER DESAFIO
+//PRIMER DESAFIO
+//PRIMER DESAFIO
+//PRIMER DESAFIO
+//PRIMER DESAFIO
+//PRIMER DESAFIO
+//PRIMER DESAFIO
+//PRIMER DESAFIO
+//PRIMER DESAFIO
+
+//SEGUNDO DESAFIO
+
+const fs = require("fs");
+
+class ProductManager {
+  constructor(path) {
+    this.path = path;
+    this.products = [];
+    this.loadProducts();
+  }
+
+  loadProducts() {
+    try {
+      this.products = JSON.parse(fs.readFileSync(this.path));
+    } catch (error) {
+      this.products = [];
+    }
+  }
+
+  saveProducts() {
+    fs.writeFileSync(this.path, JSON.stringify(this.products));
+  }
+
+  addProduct(product) {
+    product.id = this.products.length + 1;
+    this.products.push(product);
+    this.saveProducts();
+  }
+
+  getProducts() {
+    this.loadProducts();
+    return this.products;
+  }
+
+  getProductById(id) {
+    this.loadProducts();
+    for (const product of this.products) {
+      if (product.id === id) {
+        return product;
+      }
+    }
+    console.log("Not found");
+  }
+
+  updateProduct(id, updatedProduct) {
+    this.loadProducts();
+    for (const [index, product] of this.products.entries()) {
+      if (product.id === id) {
+        this.products[index] = { ...product, ...updatedProduct };
+        this.saveProducts();
+        break;
+      }
+    }
+  }
+
+  deleteProduct(id) {
+    this.loadProducts();
+    this.products = this.products.filter((product) => product.id !== id);
+    this.saveProducts();
+  }
+}
